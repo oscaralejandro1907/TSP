@@ -7,9 +7,20 @@
 
 
 #include "Header.h"
+#include "TSP.hpp"
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    cout << "Hello, World!\n";
+    
+    if(argc!=3){
+        
+        cout<<"Error: missing arguments"<<endl;
+        exit(10);
+    }
+    
+    string pathname(argv[1]); cout<<pathname<<endl;
+    double TimLim=atof(argv[2]);
+    
+    TSP *data = new TSP(pathname);
+    
     return 0;
 }
