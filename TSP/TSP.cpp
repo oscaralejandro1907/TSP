@@ -7,11 +7,13 @@
 
 #include "TSP.hpp"
 
+
 Node::Node(long id, long x, long y){
     _id=id;
     _x=x;
     _y=y;
 }
+
 
 TSP::TSP(string filepath){
     _file=filepath;
@@ -41,6 +43,10 @@ TSP::TSP(string filepath){
     }
     
     input.close();
+}
+
+double TSP::distance(long i, long j){
+    return sqrt(pow(_Nodes[i]->getx()-_Nodes[j]->getx(), 2) + pow(_Nodes[i]->gety()-_Nodes[j]->gety(), 2));
 }
 
 TSP::~TSP(){

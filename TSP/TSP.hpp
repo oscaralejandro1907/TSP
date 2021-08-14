@@ -41,6 +41,7 @@ public:
     long getnnodes() {return _nnodes;}
     Node* getNode(long id){return _Nodes[id];}
     
+    double distance(long i,long j);
 };
 
 #endif /* TSP_hpp */

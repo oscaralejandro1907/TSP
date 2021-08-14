@@ -11,10 +11,9 @@
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
-
 #include <fstream>
-
-
+#include <list>
+#include <math.h>
 
 using namespace std;
 
