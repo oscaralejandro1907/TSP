@@ -47,9 +47,55 @@ CplexModel::CplexModel(TSP *data):Algorithm(data, "CplexSolver"){
     _obj.setExpr(obj);
     obj.end();
     
+    //Creating Constraints
+    //Leaves node i exactly once
+    for (long i=0; i<_dataTSP->getnnodes(); i++) {
+        ostringstream label;
+        label<<"Leaving_from_"<<i;
+        IloExpr expr(_env);
+        for (long j=0; j<_dataTSP->getnnodes(); j++) if(i!=j) {
+            expr+=_x[i][j];
+        }
+        _Constraints.add(IloRange(_env,1,expr,1,label.str().c_str()));
+    }
     
+    //Arrives at node j exactly once
+    for (long i=0; i<_dataTSP->getnnodes(); i++) {
+        ostringstream label;
+        label<<"Arriving_at_"<<i;
+        IloExpr expr(_env);
+        for(long j=0;j<_dataTSP->getnnodes();++j) if(i!=j){
+            expr+=_x[j][i];
+        }
+        _Constraints.add(IloRange(_env,1,expr,1,label.str().c_str()));
+    }
     
+    //Eliminate subtours
+    for (long i=1; i<_dataTSP->getnnodes(); i++) {
+        for (long j=1; j<_dataTSP->getnnodes(); j++) if(i!=j) {
+            ostringstream label;
+            label<<"No_subtours_"<<i<<"_"<<j;
+            IloExpr expr(_env);
+            expr=_u[i]-_u[j]+1-_dataTSP->getnnodes()*(_x[i][j]-1);
+            _Constraints.add( IloRange(_env, -IloInfinity, expr, 0, label.str().c_str()) );
+        }
+    }
+    
+    _model.add(_Constraints);
     //Export Model
     _cplex.exportModel("TSP_Model.lp");
+    
+    //Solving the model
+    try {
+        _cplex.solve();
+        _cplex.getObjValue();
+    } catch (IloException &ex) {
+        cerr << "Concert error/exception caught: "<<ex<<endl;
+    }
+    catch(...) {
+        cerr << "Unknown error/exception caught: "<<endl;
+    }
+    
+
     
 }
