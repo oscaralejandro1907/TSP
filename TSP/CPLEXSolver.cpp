@@ -8,12 +8,18 @@
 #include "CPLEXSolver.hpp"
 
 CplexModel::CplexModel(TSP *data):Algorithm(data, "CplexSolver"){
+    
+    //Object Initialization
     _model=IloModel(_env);
     _cplex=IloCplex(_model);
     _obj = IloAdd(_model, IloMinimize(_env,0));
+    _Constraints = IloRangeArray(_env);
     
-    //Variables x
     _x = IloArray<IloNumVarArray> (_env,_dataTSP->getnnodes());
+    _u = IloNumVarArray(_env);
+    
+    
+    //Creating Variables x
     for (long i=0; i<_dataTSP->getnnodes(); i++) {
         _x[i]=IloNumVarArray(_env);
         for (long j=0; j<_dataTSP->getnnodes(); j++) {
@@ -23,8 +29,7 @@ CplexModel::CplexModel(TSP *data):Algorithm(data, "CplexSolver"){
         }
     }
     
-    //Variables u
-    _u = IloNumVarArray(_env);
+    //Creating Variables u
     for (long i=0; i<_dataTSP->getnnodes(); i++) {
         ostringstream label;
         label<<"u_"<<i;
@@ -32,14 +37,19 @@ CplexModel::CplexModel(TSP *data):Algorithm(data, "CplexSolver"){
     }
     _u[0].setUB(1);
     
-    //Objective
+    //Creating Objective Function
     IloExpr obj(_env);
     for (long i=0; i<_dataTSP->getnnodes(); i++) {
         for (long j=0; j<_dataTSP->getnnodes(); j++) if(i!=j){
-            obj+=_dataTSP->distance(i, j)*_x[i][j];
+            obj+=_dataTSP->euclideanDistance(i, j)*_x[i][j];
         }
     }
     _obj.setExpr(obj);
     obj.end();
+    
+    
+    
+    //Export Model
+    _cplex.exportModel("TSP_Model.lp");
     
 }

@@ -8,6 +8,7 @@
 
 #include "Header.h"
 #include "TSP.hpp"
+#include "CPLEXSolver.hpp"
 
 int main(int argc, const char * argv[]) {
     
@@ -21,6 +22,10 @@ int main(int argc, const char * argv[]) {
     double TimLim=atof(argv[2]);
     
     TSP *data = new TSP(pathname);
+    
+    Algorithm *Cplex = new CplexModel(data);
+    
+    
     
     return 0;
 }

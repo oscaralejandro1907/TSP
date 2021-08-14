@@ -45,7 +45,7 @@ TSP::TSP(string filepath){
     input.close();
 }
 
-double TSP::distance(long i, long j){
+double TSP::euclideanDistance(long i, long j){
     return sqrt(pow(_Nodes[i]->getx()-_Nodes[j]->getx(), 2) + pow(_Nodes[i]->gety()-_Nodes[j]->gety(), 2));
 }
 
