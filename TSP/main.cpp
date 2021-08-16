@@ -24,7 +24,7 @@ int main(int argc, const char * argv[]) {
     TSP *data = new TSP(pathname);
     
     Algorithm *Cplex = new CplexModel(data);
-    
+    //CplexModel *p = new CplexModel(data);
     
     
     return 0;

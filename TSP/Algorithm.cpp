@@ -6,3 +6,6 @@
 //
 
 #include "Algorithm.hpp"
+
+const param_t Algorithm::TimLim=0;
+const param_t Algorithm::Gap=1;

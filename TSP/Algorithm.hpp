@@ -11,6 +11,8 @@
 #include "Header.h"
 #include "TSP.hpp"
 
+typedef int param_t;
+
 class Algorithm {
 protected:
     string _AlgoName;
@@ -22,6 +24,9 @@ protected:
     
 public:
     
+    static const param_t TimLim;
+    static const param_t Gap;
+    
     Algorithm(TSP *data, string AlgoName){
         _dataTSP = data;
         _AlgoName = AlgoName;
@@ -32,6 +37,12 @@ public:
     }
     
     string getSolverName() {return _AlgoName;}
+    
+    void setParam(param_t param, double val){
+        if(param==TimLim) _TimLim=val;
+        else if(param==Gap) _Gap=val;
+    }
+    
 };  //This will be the parent class for all algorithms/solvers
 
 #endif /* Algorithm_hpp */

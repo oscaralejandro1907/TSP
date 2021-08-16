@@ -15,6 +15,7 @@
 #include <ilcplex/ilocplex.h>
 
 class CplexModel:public Algorithm {
+private:
     IloEnv _env;
     IloModel _model;
     IloCplex _cplex;
